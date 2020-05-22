@@ -7,6 +7,7 @@ const superagent = require('superagent')
 const cheerio = require('cheerio')
 const fs = require('fs')
 
+// const URL = 'https://github.com/trending/javascript?since=daily'
 const URL = 'https://github.com/trending/javascript?since=weekly'
 // const TESTURL = 'http://127.0.0.1:5500/test-data/github.html'
 let MarkDownFile = '# GitHub 上周 JavaScript 趋势榜项目'
@@ -33,12 +34,21 @@ superagent.get(URL).then((res) => {
     // ------- 项目概述 -------
 
     let description = ''
-    // 去除 emoji 的影响
-    $BoxRow('P.text-gray')[0].children.forEach((item, index) => {
-      if (item.type === 'text') {
-        description += item.data.trim()
-      }
-    })
+    const $description = $BoxRow('P.text-gray')
+
+    // 解决无简介问题
+    if ($description.length !== 0) {
+      // 去除 emoji 的影响
+      $description[0].children.forEach((item, index) => {
+        if (item.type === 'text') {
+          description += item.data.trim()
+        }
+      })
+    } else {
+      // 无简介
+      description += ''
+    }
+
     console.log('项目概述：', description)
 
     // ------- 项目星星 -------f6 text-gray mt-2
@@ -74,7 +84,6 @@ superagent.get(URL).then((res) => {
 
     // 拼接输出
     MarkDownFile += `
-
 ## ${index + 1}.  ${title}
 
 项目地址：[https://github.com/${title}](https://github.com/${title})
@@ -82,7 +91,7 @@ superagent.get(URL).then((res) => {
 stars:${stars} | forks:${forks} | ${weekStars} 
 
 ${description}
-    `
+`
   }) // each END
 
   // 获取当前时间作为
@@ -90,9 +99,9 @@ ${description}
   // console.log(MarkDownFile)
 
   // 写入文件
-  // fs.writeFile('github.md', MarkDownFile, (err) => {
-  //   if (!err) {
-  //     console.log('文件写入完成')
-  //   }
-  // })
+  fs.writeFile('github.md', MarkDownFile, (err) => {
+    if (!err) {
+      console.log('文件写入完成')
+    }
+  })
 })
