@@ -88,7 +88,7 @@ superagent.get(URL).then((res) => {
 
 项目地址：[https://github.com/${title}](https://github.com/${title})
 
-stars:${stars} | forks:${forks} | ${weekStars} 
+⭐:${stars} | forks:${forks} | ${weekStars}
 
 ${description}
 `
