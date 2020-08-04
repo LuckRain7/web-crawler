@@ -57,16 +57,16 @@ superagent.get(URL).then((res) => {
 
     const stars = divForNumber
       .find('a.muted-link.d-inline-block.mr-3')[0]
-      .children[2].data.split('\n')[2]
-      .replace(',', '')
+      .children[2].data
+      .toString()
       .trim()
     console.log('⭐：', parseInt(stars))
 
     // ------- 项目fork -------
     const forks = divForNumber
       .find('a.muted-link.d-inline-block.mr-3')[1]
-      .children[2].data.split('\n')[2]
-      .replace(',', '')
+      .children[2].data
+      .toString()
       .trim()
     console.log('forks数量：', parseInt(forks))
 
@@ -74,8 +74,8 @@ superagent.get(URL).then((res) => {
 
     const weekStars = divForNumber
       .find('span.d-inline-block.float-sm-right')[0]
-      .children[2].data.split('\n')[2]
-      .replace(',', '')
+      .children[2].data
+      .toString()
       .trim()
     console.log('本周赞数：', parseInt(weekStars))
 
